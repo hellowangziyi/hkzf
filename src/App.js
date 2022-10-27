@@ -1,24 +1,57 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react"
+import { BrowserRouter as Router, Redirect, Route } from "react-router-dom"
 
-function App() {
+
+import 'antd-mobile-v2/dist/antd-mobile.css'
+
+import './assets/fonts/iconfont.css'
+
+import Home from './pages/Home'
+import CityList from './pages/CityList'
+
+function App () {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    // <Router>
+    //   <div className="App">
+    //     <Routes>
+    //       {routers.map((item, index) => {
+    //         return (
+    //           <Route
+    //             key={index}
+    //             path={item.path}
+    //             element={<item.component />}
+    //           />
+    //         )
+    //       })}
+    //     </Routes>
+
+    //   </div>
+    // </Router>
+    <Router>
+      {/* <Switch>
+        {routers.map((item, index) => {
+          return (
+            <Route
+              key={index}
+              exact
+              path={item.path}
+              component={<item.component />}
+            //或：
+            //render={() => {
+            //  return <item.component/>;
+            //}}
+            />
+          );
+        })}
+      </Switch>
+      
+      */}
+
+      <Route exact path="/" render={() => <Redirect to='/home' />} />
+      <Route path="/home" component={Home} />
+      {/* <Route path="/map" component={Map} /> */}
+      <Route path="/citylist" component={CityList} />
+    </Router>
   );
 }
 

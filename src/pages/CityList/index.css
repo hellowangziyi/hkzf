@@ -1,0 +1,7 @@
+.cityList {
+  height: 100%;
+  padding-top: 45px;
+}
+.cityList .adm-nav-bar {
+  margin-top: -45px;
+}

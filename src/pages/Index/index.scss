@@ -1,0 +1,106 @@
+.nav {
+  text-align: center;
+  padding: 10px 0;
+
+  img {
+    width: 48px;
+  }
+
+  h2 {
+    font-size: 13px;
+    font-weight: normal;
+    margin: 0;
+  }
+}
+// .nav img {
+//   width: 48px;
+// }
+// .nav h2 {
+//   font-size: 13px;
+//   font-weight: normal;
+//   margin: 0;
+// }
+
+.swiper {
+  height: 212;
+}
+
+.group-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  // align-items: flex-end;
+  padding: 15px;
+  .group-title-left {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .group-title-right {
+    font-size: 13px;
+  }
+}
+
+// 租房小组
+.group-list {
+  .am-flexbox {
+    background-color: inherit;
+    padding-left: 10px;
+  }
+
+  .am-grid-item {
+    background-color: #fff;
+    margin: 0 10px 10px 0;
+  }
+}
+
+.group-item {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  .group-item-title {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .group-item-desc {
+    color: #666;
+    font-size: 13px;
+  }
+
+  img {
+    width: 53px;
+  }
+}
+
+// 最新资讯
+.news-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.news-list {
+  display: flex;
+  margin-bottom: 8px;
+  border: 1px solid #fff;
+  background-color: #fff;
+  padding: 10px;
+  img {
+    width: 160px;
+  }
+  .news-data {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 0 10px;
+    .info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: normal;
+    }
+  }
+}
