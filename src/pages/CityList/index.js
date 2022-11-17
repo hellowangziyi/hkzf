@@ -53,11 +53,16 @@ export default class CityList extends React.Component {
     isSwipersLoaded: true,
     activeIndex: 0, //高亮
   };
-  componentDidMount() {
+
+  constructor(props) {
+    super(props)
+    this.mainList = React.createRef()
+  }
+  componentDidMount () {
     this.getAllCity();
   }
 
-  async getAllCity() {
+  async getAllCity () {
     const res = await axios.get("http://localhost:8080/area/city?level=1");
     console.log("res", res);
 
@@ -96,7 +101,7 @@ export default class CityList extends React.Component {
             </div>
           );
         })}
-        <div className="name"></div>
+        {/* <div className="name"></div> */}
       </div>
     );
   };
@@ -111,13 +116,20 @@ export default class CityList extends React.Component {
   renderCityIndex = () => {
     const { cityIndex, activeIndex } = this.state;
     return cityIndex.map((item, index) => (
-      <li className="city-index-item" key={item}>
-        <span className={activeIndex === index ? "index-active" : ""}>
+      <li className="key_item" key={item} onClick={() => this.onKeyLetterClick(index)}>
+        <span className={activeIndex === index ? "active" : ""}>
           {item.toUpperCase()}
         </span>
       </li>
     ));
   };
+  onKeyLetterClick = (index) => {
+    this.mainList.current.scrollToRow(index);
+    this.setState({
+      activeIndex: index,
+    })
+  };
+
   onRowsRendered = ({ startIndex }) => {
     if (this.state.activeIndex !== startIndex) {
       this.setState({
@@ -125,29 +137,33 @@ export default class CityList extends React.Component {
       });
     }
   };
-  render() {
+  render () {
     return (
       <div className="cityList">
         <NavBar
           mode="light"
-          // icon={<Icon type="left" />}
+        // icon={<Icon type="left" />}
         >
           城市列表
         </NavBar>
 
         {/* 列表 */}
-        <AutoSizer>
-          {({ height, width }) => (
-            <List
-              height={height}
-              rowCount={this.state.cityIndex.length}
-              rowHeight={this.getRowHeight}
-              rowRenderer={this.rowRenderer}
-              width={width}
-              onRowsRendered={this.onRowsRendered}
-            />
-          )}
-        </AutoSizer>
+        <div className="list_content" >
+          <AutoSizer>
+            {({ height, width }) => (
+              <List
+                height={height}
+                rowCount={this.state.cityIndex.length}
+                rowHeight={this.getRowHeight}
+                rowRenderer={this.rowRenderer}
+                width={width}
+                onRowsRendered={this.onRowsRendered}
+                ref={this.mainList}
+                scrollToAlignment="start"
+              />
+            )}
+          </AutoSizer>
+        </div>
         {/* <List
                     width={300}
                     height={300}
@@ -157,7 +173,7 @@ export default class CityList extends React.Component {
                 /> */}
 
         {/* 索引侧栏 */}
-        <ul className="city-index">{this.renderCityIndex()}</ul>
+        <ul className="key_list">{this.renderCityIndex()}</ul>
       </div>
     );
   }

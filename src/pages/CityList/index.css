@@ -25,3 +25,20 @@
   font-size: 15px;
   border-bottom: 1px solid #ccc;
 }
+.cityList .key_list {
+  position: fixed;
+  top: 10%;
+  right: 0;
+}
+.cityList .key_list .key_item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  width: 28px;
+}
+.cityList .key_list .active {
+  background: green;
+  color: white;
+  border-radius: 20px;
+}
