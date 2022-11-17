@@ -1,36 +1,37 @@
-import React from 'react'
-import { NavBar, Icon } from 'antd-mobile';
-import axios from 'axios'
-import { AutoSizer, List } from 'react-virtualized';
-import './index.css'
-
+import React from "react";
+import { NavBar, Icon } from "antd-mobile";
+import axios from "axios";
+import { AutoSizer, List } from "react-virtualized";
+import "./index.css";
 
 // cityList: { a: [{}, {}], b: [{}, {}] }
 // cityIndex:['a','b']
 
 const handleCityData = (list) => {
-    const cityList = {}
-    let cityIndex = []
-    list.map(item => {
-        const index = item.short.substring(0, 1)
-        if (!cityList[index]) {
-            cityList[index] = [item]
-            cityIndex.push(index)
-        } else {
-            cityList[index].push(item)
-        }
-    })
-    cityIndex = cityIndex.sort()
-    console.log('cintyindex', cityIndex)
-    console.log('cityList', cityList)
-    return {
-        cityList,
-        cityIndex
+  const cityList = {};
+  let cityIndex = [];
+  list.map((item) => {
+    const index = item.short.substring(0, 1);
+    if (!cityList[index]) {
+      cityList[index] = [item];
+      cityIndex.push(index);
+    } else {
+      cityList[index].push(item);
     }
-}
+  });
+  cityIndex = cityIndex.sort();
+  console.log("cintyindex", cityIndex);
+  console.log("cityList", cityList);
+  return {
+    cityList,
+    cityIndex,
+  };
+};
 
 const list = Array(100).fill("hghghjkhjkhkjh");
 
+const TITLE_HEIGHT = 36;
+const NAME_HEIGHT = 50;
 // function rowRenderer ({
 //     key, // Unique key within array of rows
 //     index, // Index of row within collection
@@ -46,83 +47,118 @@ const list = Array(100).fill("hghghjkhjkhkjh");
 // }
 
 export default class CityList extends React.Component {
-    state = {
-        cityList: {},
-        cityIndex: [],
-        isSwipersLoaded: true
-    }
-    componentDidMount () {
-        this.getAllCity()
-    }
+  state = {
+    cityList: {},
+    cityIndex: [],
+    isSwipersLoaded: true,
+    activeIndex: 0, //高亮
+  };
+  componentDidMount() {
+    this.getAllCity();
+  }
 
+  async getAllCity() {
+    const res = await axios.get("http://localhost:8080/area/city?level=1");
+    console.log("res", res);
 
-    async getAllCity () {
-        const res = await axios.get('http://localhost:8080/area/city?level=1')
-        console.log('res', res)
+    const data = res.data.body;
+    data.sort((a, b) => a.short - b.short);
+    console.log("data", data);
+    const { cityList, cityIndex } = handleCityData(data);
 
-        const data = res.data.body
-        data.sort((a, b) => a.short - b.short)
-        console.log('data', data)
-        const { cityList, cityIndex } = handleCityData(data)
+    const hotRes = await axios.get("http://localhost:8080/area/hot");
 
+    cityIndex.unshift("hot");
+    cityList["hot"] = hotRes.data.body;
+    console.log(cityList, cityIndex);
+    this.setState({
+      cityList,
+      cityIndex,
+    });
+  }
 
-        const hotRes = await axios.get('http://localhost:8080/area/hot')
-
-        cityIndex.unshift('hot')
-        cityList['hot'] = hotRes.data.body
-        console.log(cityList, cityIndex)
-        this.setState({
-            cityList,
-            cityIndex,
-        })
-    }
-
-    rowRenderer = ({
-        key, // Unique key within array of rows
-        index, // Index of row within collection
-        isScrolling, // The List is currently being scrolled
-        isVisible, // This row is visible within the List (eg it is not an overscanned row)
-        style, // Style object to be applied to row (to position it)
-    }) => {
-        const { cityIndex, cityList } = this.state
-        return (
-            <div key={key} style={style} className='city'>
-                <div className='title'> {this.state.cityIndex[index]}</div>
-                <div className='name'></div>
+  rowRenderer = ({
+    key, // Unique key within array of rows
+    index, // Index of row within collection
+    isScrolling, // The List is currently being scrolled
+    isVisible, // This row is visible within the List (eg it is not an overscanned row)
+    style, // Style object to be applied to row (to position it)
+  }) => {
+    const { cityIndex, cityList } = this.state;
+    const letter = cityIndex[index];
+    return (
+      <div key={key} style={style} className="city">
+        <div className="title"> {letter}</div>
+        {cityList[letter].map((item) => {
+          return (
+            <div className="name" key={item.value}>
+              {item.label}
             </div>
-        );
+          );
+        })}
+        <div className="name"></div>
+      </div>
+    );
+  };
+
+  getRowHeight = ({ index }) => {
+    console.log("state", this.state);
+    const { cityIndex, cityList } = this.state;
+
+    return TITLE_HEIGHT + cityList[cityIndex[index]].length * NAME_HEIGHT;
+  };
+
+  renderCityIndex = () => {
+    const { cityIndex, activeIndex } = this.state;
+    return cityIndex.map((item, index) => (
+      <li className="city-index-item" key={item}>
+        <span className={activeIndex === index ? "index-active" : ""}>
+          {item.toUpperCase()}
+        </span>
+      </li>
+    ));
+  };
+  onRowsRendered = ({ startIndex }) => {
+    if (this.state.activeIndex !== startIndex) {
+      this.setState({
+        activeIndex: startIndex,
+      });
     }
+  };
+  render() {
+    return (
+      <div className="cityList">
+        <NavBar
+          mode="light"
+          // icon={<Icon type="left" />}
+        >
+          城市列表
+        </NavBar>
 
-    render () {
-        return (
-            <div className="cityList">
-                <NavBar
-                    mode="light"
-                // icon={<Icon type="left" />}
-                >城市列表</NavBar>
-
-                {/* 列表 */}
-                <AutoSizer>
-                    {({ height, width }) => (
-                        <List
-                            height={height}
-                            rowCount={this.state.cityIndex.length}
-                            rowHeight={20}
-                            rowRenderer={this.rowRenderer}
-                            width={width}
-                        />
-                    )}
-                </AutoSizer>
-                {/* <List
+        {/* 列表 */}
+        <AutoSizer>
+          {({ height, width }) => (
+            <List
+              height={height}
+              rowCount={this.state.cityIndex.length}
+              rowHeight={this.getRowHeight}
+              rowRenderer={this.rowRenderer}
+              width={width}
+              onRowsRendered={this.onRowsRendered}
+            />
+          )}
+        </AutoSizer>
+        {/* <List
                     width={300}
                     height={300}
                     rowCount={list.length}
                     rowHeight={20}
                     rowRenderer={rowRenderer}
                 /> */}
-            </div>
-        )
-    }
 
-
+        {/* 索引侧栏 */}
+        <ul className="city-index">{this.renderCityIndex()}</ul>
+      </div>
+    );
+  }
 }
