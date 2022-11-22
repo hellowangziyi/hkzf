@@ -3,6 +3,7 @@ import { NavBar, Icon } from "antd-mobile";
 import axios from "axios";
 import { AutoSizer, List } from "react-virtualized";
 import "./index.css";
+import NavHeader from "../../components/NavHeader";
 
 // cityList: { a: [{}, {}], b: [{}, {}] }
 // cityIndex:['a','b']
@@ -55,14 +56,14 @@ export default class CityList extends React.Component {
   };
 
   constructor(props) {
-    super(props)
-    this.mainList = React.createRef()
+    super(props);
+    this.mainList = React.createRef();
   }
-  componentDidMount () {
+  componentDidMount() {
     this.getAllCity();
   }
 
-  async getAllCity () {
+  async getAllCity() {
     const res = await axios.get("http://localhost:8080/area/city?level=1");
     console.log("res", res);
 
@@ -116,7 +117,11 @@ export default class CityList extends React.Component {
   renderCityIndex = () => {
     const { cityIndex, activeIndex } = this.state;
     return cityIndex.map((item, index) => (
-      <li className="key_item" key={item} onClick={() => this.onKeyLetterClick(index)}>
+      <li
+        className="key_item"
+        key={item}
+        onClick={() => this.onKeyLetterClick(index)}
+      >
         <span className={activeIndex === index ? "active" : ""}>
           {item.toUpperCase()}
         </span>
@@ -127,7 +132,7 @@ export default class CityList extends React.Component {
     this.mainList.current.scrollToRow(index);
     this.setState({
       activeIndex: index,
-    })
+    });
   };
 
   onRowsRendered = ({ startIndex }) => {
@@ -137,18 +142,19 @@ export default class CityList extends React.Component {
       });
     }
   };
-  render () {
+  render() {
     return (
       <div className="cityList">
-        <NavBar
+        {/* <NavBar
           mode="light"
         // icon={<Icon type="left" />}
         >
           城市列表
-        </NavBar>
+        </NavBar> */}
 
+        <NavHeader onLeftClick={() => console.log("test")}>城市列表</NavHeader>
         {/* 列表 */}
-        <div className="list_content" >
+        <div className="list_content">
           <AutoSizer>
             {({ height, width }) => (
               <List
