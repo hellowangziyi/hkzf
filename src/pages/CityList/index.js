@@ -152,7 +152,7 @@ export default class CityList extends React.Component {
           城市列表
         </NavBar> */}
 
-        <NavHeader onLeftClick={() => console.log("test")}>城市列表</NavHeader>
+        <NavHeader>城市列表</NavHeader>
         {/* 列表 */}
         <div className="list_content">
           <AutoSizer>
