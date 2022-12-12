@@ -59,11 +59,11 @@ export default class CityList extends React.Component {
     super(props);
     this.mainList = React.createRef();
   }
-  componentDidMount() {
+  componentDidMount () {
     this.getAllCity();
   }
 
-  async getAllCity() {
+  async getAllCity () {
     const res = await axios.get("http://localhost:8080/area/city?level=1");
     console.log("res", res);
 
@@ -97,7 +97,7 @@ export default class CityList extends React.Component {
         <div className="title"> {letter}</div>
         {cityList[letter].map((item) => {
           return (
-            <div className="name" key={item.value}>
+            <div className="name" key={item.value} onClick={() => this.clickCity(item.label)}>
               {item.label}
             </div>
           );
@@ -142,7 +142,11 @@ export default class CityList extends React.Component {
       });
     }
   };
-  render() {
+
+  clickCity = (cityName) => {
+    console.log('cityName', cityName)
+  }
+  render () {
     return (
       <div className="cityList">
         {/* <NavBar

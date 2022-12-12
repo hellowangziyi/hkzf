@@ -49,14 +49,14 @@ export default class Index extends React.Component {
     cityName: "定位中",
   };
 
-  async getSwipers() {
+  async getSwipers () {
     const res = await API.get("http://localhost:8080/home/swiper");
     this.setState({
       swipers: res.data.body,
       isSwipersLoaded: true,
     });
   }
-  async getGroups() {
+  async getGroups () {
     const res = await API.get("http://localhost:8080/home/groups", {
       params: {
         area: "",
@@ -67,7 +67,7 @@ export default class Index extends React.Component {
     });
   }
 
-  renderSwipers() {
+  renderSwipers () {
     return this.state.swipers.map((item) => {
       <a
         key={item.id}
@@ -75,7 +75,7 @@ export default class Index extends React.Component {
         style={{ display: "inline-block", width: "100%", height: 212 }}
       >
         <img
-          src={`http://localhost:8080${item.imgSrc}`}
+          src={`http://hkzf.zbztb.cn` + item.imgSrc}
           alt=""
           style={{ width: "100%", verticalAlign: "top" }}
         />
@@ -83,7 +83,7 @@ export default class Index extends React.Component {
     });
   }
 
-  renderFlexItem() {
+  renderFlexItem () {
     return navs.map((item) => (
       <Flex.Item
         key={item.id}
@@ -97,11 +97,11 @@ export default class Index extends React.Component {
       </Flex.Item>
     ));
   }
-  renderGroups() {
+  renderGroups () {
     // return this.state.groups.map(item =>
     //     )
   }
-  componentDidMount() {
+  componentDidMount () {
     this.getSwipers();
     this.getGroups();
 
@@ -122,7 +122,7 @@ export default class Index extends React.Component {
   //         })
   //     }
   // }
-  render() {
+  render () {
     return (
       <div className="index">
         {/* 轮播图 */}
@@ -139,16 +139,35 @@ export default class Index extends React.Component {
           {this.renderSwipers()}
         </Carousel>
 
+
         {/* 搜索框 */}
         <Flex className="search-box">
           {/* 左侧白色区域 */}
-          <div
-            className="location"
-            onClick={() => this.props.history.push("/citylist")}
-          >
-            <span className="name">{this.state.cityName}</span>
-            <i className="iconfont icon-arrow"></i>
-          </div>
+          <Flex className="search">
+            {/* 位置 */}
+            <div
+              className="location"
+              onClick={() => this.props.history.push("/citylist")}
+            >
+              <span className="name">{this.state.cityName}</span>
+              {/* //{this.state.curCityName} */}
+              <i className="iconfont icon-arrow" />
+            </div>
+
+            {/* 搜索表单 */}
+            <div
+              className="form"
+            // onClick={() => this.props.history.push("/search")}
+            >
+              <i className="iconfont icon-seach" />
+              <span className="text">请输入小区或地址</span>
+            </div>
+          </Flex>
+          {/* 右侧地图图标 */}
+          <i
+            className="iconfont icon-map"
+            onClick={() => this.props.history.push("/map")}
+          />
         </Flex>
 
         <Flex className="nav">
