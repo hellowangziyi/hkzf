@@ -7,6 +7,7 @@ import Nav3 from "../../assets/images/nav-3.png";
 import Nav4 from "../../assets/images/nav-4.png";
 import "./index.scss";
 import { BASE_URL } from "../../utils/url";
+import SearchHeader from "../../components/SearchHeader";
 
 const navs = [
   {
@@ -46,7 +47,7 @@ export default class Index extends React.Component {
     isSwipersLoaded: false,
     groups: [],
     news: [],
-    cityName: "定位中",
+    cityName: localStorage.getItem('hkzf_city') || "定位中",
   };
 
   async getSwipers () {
@@ -141,35 +142,7 @@ export default class Index extends React.Component {
 
 
         {/* 搜索框 */}
-        <Flex className="search-box">
-          {/* 左侧白色区域 */}
-          <Flex className="search">
-            {/* 位置 */}
-            <div
-              className="location"
-              onClick={() => this.props.history.push("/citylist")}
-            >
-              <span className="name">{this.state.cityName}</span>
-              {/* //{this.state.curCityName} */}
-              <i className="iconfont icon-arrow" />
-            </div>
-
-            {/* 搜索表单 */}
-            <div
-              className="form"
-            // onClick={() => this.props.history.push("/search")}
-            >
-              <i className="iconfont icon-seach" />
-              <span className="text">请输入小区或地址</span>
-            </div>
-          </Flex>
-          {/* 右侧地图图标 */}
-          <i
-            className="iconfont icon-map"
-            onClick={() => this.props.history.push("/map")}
-          />
-        </Flex>
-
+        <SearchHeader cityName={this.state.cityName}></SearchHeader>
         <Flex className="nav">
           {/* <Flex.Item>
                     <img src={Nav1}></img>

@@ -145,6 +145,8 @@ export default class CityList extends React.Component {
 
   clickCity = (cityName) => {
     console.log('cityName', cityName)
+    localStorage.setItem('hkzf_city', cityName)
+    this.props.history.go(-1)
   }
   render () {
     return (
