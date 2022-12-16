@@ -13,7 +13,7 @@ function SearchHeader ({ history, cityName, className }) {
                     className="location"
                     onClick={() => history.push("/citylist")}
                 >
-                    <span className="name">{cityName}</span>
+                    <span className="name">{cityName || '定位中'}</span>
                     {/* //{this.state.curCityName} */}
                     <i className="iconfont icon-arrow" />
                 </div>

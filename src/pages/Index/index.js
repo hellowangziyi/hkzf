@@ -8,6 +8,7 @@ import Nav4 from "../../assets/images/nav-4.png";
 import "./index.scss";
 import { BASE_URL } from "../../utils/url";
 import SearchHeader from "../../components/SearchHeader";
+import { stringify } from "json5";
 
 const navs = [
   {
@@ -47,7 +48,7 @@ export default class Index extends React.Component {
     isSwipersLoaded: false,
     groups: [],
     news: [],
-    cityName: localStorage.getItem('hkzf_city') || "定位中",
+    cityName: JSON.parse(localStorage.getItem("hkzf_city")).label || "定位中",
   };
 
   async getSwipers () {

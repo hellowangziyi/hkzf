@@ -1,6 +1,6 @@
 import React from 'react'
 import { Flex } from 'antd-mobile-v2'
-
+import './index.scss'
 
 const filter_title = [
     {
@@ -21,16 +21,28 @@ const filter_title = [
     },
 
 ]
-export default function FilterTitle () {
+export default function FilterTitle (props) {
+    const { titleSelectedStatus, onTitleClick } = props
     return (
         <Flex className='root' align='center'>
-            <Flex.Item>
+           {
+            filter_title.map(item=>{
+                const isSelected = titleSelectedStatus[item.type]
+               
+                return ( <Flex.Item onClick={()=>onTitleClick(item.type)} key={item.type}>
+                    <span className={['dropdown',isSelected?'selected':''].join(" ")}>
+                        <span>{item.name}</span>
+                        <i className='iconfont icon-arrow'></i>
+                    </span>
+                </Flex.Item>)
+            })
+           } 
+            {/* <Flex.Item>
                 <span>
                     <span>区域</span>
                     <i className='iconfont icon-arrow'></i>
                 </span>
-
-            </Flex.Item>
+            </Flex.Item> */}
 
         </Flex>
     )

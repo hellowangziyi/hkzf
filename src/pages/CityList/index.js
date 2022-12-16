@@ -97,7 +97,7 @@ export default class CityList extends React.Component {
         <div className="title"> {letter}</div>
         {cityList[letter].map((item) => {
           return (
-            <div className="name" key={item.value} onClick={() => this.clickCity(item.label)}>
+            <div className="name" key={item.value} onClick={() => this.clickCity(item)}>
               {item.label}
             </div>
           );
@@ -143,9 +143,9 @@ export default class CityList extends React.Component {
     }
   };
 
-  clickCity = (cityName) => {
-    console.log('cityName', cityName)
-    localStorage.setItem('hkzf_city', cityName)
+  clickCity = (city) => {
+    console.log('city', city,JSON.stringify(city))
+    localStorage.setItem('hkzf_city', JSON.stringify(city))
     this.props.history.go(-1)
   }
   render () {
