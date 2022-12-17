@@ -8,7 +8,6 @@ import Nav4 from "../../assets/images/nav-4.png";
 import "./index.scss";
 import { BASE_URL } from "../../utils/url";
 import SearchHeader from "../../components/SearchHeader";
-import { stringify } from "json5";
 
 const navs = [
   {
@@ -37,10 +36,6 @@ const navs = [
   },
 ];
 
-const data = Array.from(new Array(4)).map((_val, i) => ({
-  imgSrc: "https://gw.alipayobjects.com/zos/rmsportal/nywPmnTAvTmLusPxHPSu.png",
-  title: `name${i}`,
-}));
 export default class Index extends React.Component {
   state = {
     // 轮播图数据
@@ -48,17 +43,16 @@ export default class Index extends React.Component {
     isSwipersLoaded: false,
     groups: [],
     news: [],
-    cityName: JSON.parse(localStorage.getItem("hkzf_city")).label || "定位中",
   };
 
-  async getSwipers () {
+  async getSwipers() {
     const res = await API.get("http://localhost:8080/home/swiper");
     this.setState({
       swipers: res.data.body,
       isSwipersLoaded: true,
     });
   }
-  async getGroups () {
+  async getGroups() {
     const res = await API.get("http://localhost:8080/home/groups", {
       params: {
         area: "",
@@ -69,7 +63,7 @@ export default class Index extends React.Component {
     });
   }
 
-  renderSwipers () {
+  renderSwipers() {
     return this.state.swipers.map((item) => {
       <a
         key={item.id}
@@ -85,7 +79,7 @@ export default class Index extends React.Component {
     });
   }
 
-  renderFlexItem () {
+  renderFlexItem() {
     return navs.map((item) => (
       <Flex.Item
         key={item.id}
@@ -99,11 +93,11 @@ export default class Index extends React.Component {
       </Flex.Item>
     ));
   }
-  renderGroups () {
+  renderGroups() {
     // return this.state.groups.map(item =>
     //     )
   }
-  componentDidMount () {
+  componentDidMount() {
     this.getSwipers();
     this.getGroups();
 
@@ -124,7 +118,7 @@ export default class Index extends React.Component {
   //         })
   //     }
   // }
-  render () {
+  render() {
     return (
       <div className="index">
         {/* 轮播图 */}
@@ -140,7 +134,6 @@ export default class Index extends React.Component {
         <Carousel autoplay infinite>
           {this.renderSwipers()}
         </Carousel>
-
 
         {/* 搜索框 */}
         <SearchHeader cityName={this.state.cityName}></SearchHeader>
