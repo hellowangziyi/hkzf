@@ -18,6 +18,12 @@ export default class Filter extends Component {
     openType: "",
     // 筛选项数据
     filterData: {},
+    selectedValue:{
+      area:['area','null','null'],
+      mode:['null'],
+      price:['null'],
+      more:[]
+    }
   };
   componentDidMount() {
     this.getFilterData();
@@ -39,9 +45,17 @@ export default class Filter extends Component {
       openType: "",
     });
   };
-  onSave = () => {
+  onSave = (type,value) => {
+    console.log('type',type);
+    console.log('value',value);
+    // 隐藏对话框，保存选项值
     this.setState({
       openType: "",
+      selectedValue:{
+        ...this.state.selectedValue,
+        [type]:value
+      }
+     
     });
   };
   // 获取筛选项的数据
@@ -55,12 +69,13 @@ export default class Filter extends Component {
   }
   // 渲染FilterPicker组件
   renderFilterPicker() {
-    const { openType, filterData } = this.state;
+    const { openType, filterData,selectedValue } = this.state;
     if (openType !== "area" && openType !== "mode" && openType !== "price")
       return null;
     let data = [];
     let cols = 1;
     console.log("filterData[openType]", filterData[openType]);
+    const defaultValue = selectedValue[openType]
     switch (openType) {
       case "area":
         data = [filterData["area"], filterData["subway"]];
@@ -77,10 +92,13 @@ export default class Filter extends Component {
     }
     return (
       <FilterPicker
+        key={openType}
         onCancel={this.onCancel}
         onSave={this.onSave}
         data={data}
+        type={openType}
         cols={cols}
+        defaultValue={defaultValue}
       ></FilterPicker>
     );
   }
