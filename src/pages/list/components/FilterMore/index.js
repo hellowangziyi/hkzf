@@ -1,9 +1,50 @@
 import React, { Component } from "react";
 import FilterFooter from "../../../../components/FilterFooter";
-import './index.scss'
+import "./index.scss";
+
 export default class FilterMore extends Component {
-  render () {
-    const { roomType, oriented, floor, characteristic } = this.props;
+  state = {
+    selected: this.props.selected || [],
+  };
+  // 渲染标签
+  renderFilters(data) {
+    const { selected } = this.state;
+    return data.map((item) => (
+      <span
+        onClick={() => this.handlerSel(item.value)}
+        key={item.value}
+        className={[
+          "tag",
+          selected.includes(item.value) ? "tagActive" : "",
+        ].join(" ")}
+      >
+        {item.label}
+      </span>
+    ));
+  }
+  handlerSel(val) {
+    console.log("val", val);
+    const newSelected = [...this.state.selected];
+    if (newSelected.includes(val)) {
+      //以选中，则取消选择
+      const index = newSelected.findIndex((item) => item === val);
+      newSelected.splice(index, 1);
+    } else {
+      newSelected.push(val);
+    }
+    this.setState({
+      selected: newSelected,
+    });
+  }
+  onCancel = () => {
+    //清除
+    this.setState({
+      selected: [],
+    });
+  };
+  render() {
+    const { roomType, oriented, floor, characteristic, onCancel, onOk } =
+      this.props;
     return (
       <div className="root">
         {/* 遮罩层 */}
@@ -27,8 +68,15 @@ export default class FilterMore extends Component {
         </div>
 
         {/* 底部按钮 */}
-        <FilterFooter onCancel={onCancel} onOk={() => { onOk(this.state.selected) }} className="footer" />
+        <FilterFooter
+          onCancel={this.onCancel}
+          onOk={() => {
+            onOk("more", this.state.selected);
+          }}
+          className="footer"
+          cancelText="清除"
+        />
       </div>
-    )
+    );
   }
 }

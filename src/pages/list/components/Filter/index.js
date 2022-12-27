@@ -3,7 +3,7 @@ import FilterTitle from "../FilterTitle";
 import FilterMore from "../FilterMore";
 import FilterPicker from "../FilterPicker";
 import { API } from "../../../../utils/api";
-
+import "./index.scss";
 const titleSelectedStatus = {
   area: false,
   mode: false,
@@ -39,6 +39,7 @@ export default class Filter extends Component {
       } else {
         //检查是否有选中项
         const selectedVal = selectedValue[key];
+        console.log("selectedVal", selectedVal);
         if (
           key === "area" &&
           (selectedVal.length > 2 || selectedVal[0] !== "area")
@@ -48,8 +49,9 @@ export default class Filter extends Component {
           newtitleSelectedStatus[key] = true;
         } else if (key === "price" && selectedVal[0] !== "null") {
           newtitleSelectedStatus[key] = true;
-        } else if (key === "more") {
+        } else if (key === "more" && selectedVal.length !== 0) {
           //TODOS:filterMore
+          newtitleSelectedStatus[key] = true;
         } else {
           newtitleSelectedStatus[key] = false;
         }
@@ -63,13 +65,30 @@ export default class Filter extends Component {
     });
   };
   onCancel = () => {
+    const { openType, titleSelectedStatus } = this.state;
+    const newtitleSelectedStatus = { ...titleSelectedStatus };
+    newtitleSelectedStatus[openType] = false;
     this.setState({
       openType: "",
+      titleSelectedStatus: newtitleSelectedStatus,
     });
   };
   onSave = (type, value) => {
     console.log("type", type);
     console.log("value", value);
+    const newtitleSelectedStatus = { ...this.state.titleSelectedStatus };
+
+    if (type === "area" && (value.length > 2 || value[0] !== "area")) {
+      newtitleSelectedStatus[type] = true;
+    } else if (type === "mode" && value[0] !== "null") {
+      newtitleSelectedStatus[type] = true;
+    } else if (type === "price" && value[0] !== "null") {
+      newtitleSelectedStatus[type] = true;
+    } else if (type === "more" && value.length !== 0) {
+      newtitleSelectedStatus[type] = true;
+    } else {
+      newtitleSelectedStatus[type] = false;
+    }
     // 隐藏对话框，保存选项值
     this.setState({
       openType: "",
@@ -77,6 +96,7 @@ export default class Filter extends Component {
         ...this.state.selectedValue,
         [type]: value,
       },
+      titleSelectedStatus: newtitleSelectedStatus,
     });
   };
   // 获取筛选项的数据
@@ -128,6 +148,7 @@ export default class Filter extends Component {
     const {
       openType,
       filterData: { roomType, oriented, floor, characteristic },
+      selectedValue,
     } = this.state;
     if (openType !== "more") return null;
     return (
@@ -136,6 +157,9 @@ export default class Filter extends Component {
         oriented={oriented}
         floor={floor}
         characteristic={characteristic}
+        onCancel={this.onCancel}
+        onOk={this.onSave}
+        selected={selectedValue[openType]}
       ></FilterMore>
     );
   }
@@ -160,6 +184,7 @@ export default class Filter extends Component {
           {this.renderFilterPicker()}
 
           {/* <FilterMore></FilterMore> */}
+          {this.renderFilterMore()}
         </div>
       </div>
     );
