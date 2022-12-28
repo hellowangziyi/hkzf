@@ -4,6 +4,7 @@ import FilterMore from "../FilterMore";
 import FilterPicker from "../FilterPicker";
 import { API } from "../../../../utils/api";
 import "./index.scss";
+
 const titleSelectedStatus = {
   area: false,
   mode: false,
@@ -76,6 +77,7 @@ export default class Filter extends Component {
   onSave = (type, value) => {
     console.log("type", type);
     console.log("value", value);
+    // 标题高亮状态调整
     const newtitleSelectedStatus = { ...this.state.titleSelectedStatus };
 
     if (type === "area" && (value.length > 2 || value[0] !== "area")) {
@@ -89,13 +91,26 @@ export default class Filter extends Component {
     } else {
       newtitleSelectedStatus[type] = false;
     }
+    // 整理filter参数
+    const newSelectedValue = {
+      ...this.state.selectedValue,
+      [type]: value,
+    };
+    const filter = {};
+    const { area, mode, price, more } = newSelectedValue;
+    if (area.length === 3) {
+      filter.area = area[2] === "null" ? area[1] : area[2];
+    }
+    filter.mode = mode[0];
+    filter.price = price[0];
+    filter.more = more.join(",");
+    console.log("filter", filter);
+    //传给父组件
+    this.props.handleFilterChange(filter);
     // 隐藏对话框，保存选项值
     this.setState({
       openType: "",
-      selectedValue: {
-        ...this.state.selectedValue,
-        [type]: value,
-      },
+      selectedValue: newSelectedValue,
       titleSelectedStatus: newtitleSelectedStatus,
     });
   };

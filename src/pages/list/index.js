@@ -3,9 +3,43 @@ import { Flex } from "antd-mobile-v2";
 import SearchHeader from "../../components/SearchHeader";
 import "./index.scss";
 import Filter from "./components/Filter";
+import { API } from "../../utils/api";
+
+const { label, value } = JSON.parse(localStorage.getItem("hkzf_city"));
+
 export default class List extends React.Component {
+  state = {
+    list: [],
+    count: 0,
+  };
+  // 初始化实例属性
+  filter = {};
+
+  componentDidMount() {
+    this.searchHouseList();
+  }
+  handleFilterChange = (filter) => {
+    this.filter = filter;
+    this.searchHouseList();
+  };
+  searchHouseList = async () => {
+    const res = await API.get("/houses", {
+      params: {
+        cityId: value,
+        ...this.filter,
+        start: 1,
+        end: 20,
+      },
+    });
+    const { list, count } = res.body;
+    this.setState({
+      list: list,
+      count: count,
+    });
+    console.log("res", res);
+  };
   render() {
-    const cityName = JSON.parse(localStorage.getItem("hkzf_city")).label;
+    const cityName = label;
     return (
       <div>
         <Flex className="header">
