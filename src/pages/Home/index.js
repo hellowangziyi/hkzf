@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom'
 
 import News from '../News'
 import Index from '../Index'
-import List from '../list'
+import houseList from '../list'
 import Profile from '../profile'
 
 import { TabBar } from 'antd-mobile-v2'
@@ -65,7 +65,7 @@ export default class Home extends React.Component {
             <div className="home">
                 <Route path="/home/news" component={News} />
                 <Route exact path="/home" component={Index} />
-                <Route path="/home/list" component={List} />
+                <Route path="/home/list" component={houseList} />
                 <Route path="/home/profile" component={Profile} />
 
                 {/* TabBar */}

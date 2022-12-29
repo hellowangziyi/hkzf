@@ -1,9 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
+import './index.scss'
 
-function HouseItem({ src, title, desc, tags, price, onClick }) {
+function HouseItem({ src, title, desc, tags, price, onClick, style }) {
   return (
-    <div className="house" onClick={onClick}>
+    <div className="house" onClick={onClick} style={style}>
       <div className="imgWrap">
         <img className="img" src={src} alt="" />
       </div>
@@ -37,3 +38,4 @@ HouseItem.PropsTypes = {
   price: PropTypes.number,
   onClick: PropTypes.func,
 };
+export default HouseItem

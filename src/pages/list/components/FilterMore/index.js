@@ -73,7 +73,7 @@ export default class FilterMore extends Component {
           onOk={() => {
             onOk("more", this.state.selected);
           }}
-          className="footer"
+          className="more_footer"
           cancelText="清除"
         />
       </div>

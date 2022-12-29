@@ -4,6 +4,9 @@ import FilterMore from "../FilterMore";
 import FilterPicker from "../FilterPicker";
 import { API } from "../../../../utils/api";
 import "./index.scss";
+import { Spring, animated } from '@react-spring/web'
+import Mask from '../Mask'
+
 
 const titleSelectedStatus = {
   area: false,
@@ -113,6 +116,7 @@ export default class Filter extends Component {
       selectedValue: newSelectedValue,
       titleSelectedStatus: newtitleSelectedStatus,
     });
+    window.scrollTo(0,0)
   };
   // 获取筛选项的数据
   async getFilterData() {
@@ -178,14 +182,33 @@ export default class Filter extends Component {
       ></FilterMore>
     );
   }
+  //  animation = useSpring({
+  //   from: { opacity: 0 },
+  //   to: { opacity: 1 }
+  // });
+  renderMask(){
+    const {openType} = this.state
+    let isHide = false
+    if(openType==='more'||openType===''){
+isHide=true
+
+    }
+    return (<Mask className={'mask'} onClick={this.onCancel} isHide={isHide}></Mask>)
+  }
   render() {
     const { titleSelectedStatus, openType } = this.state;
+    // const animation = useSpring ({
+    //     from: { opacity: 0 },
+    //     to: { opacity: 1 },
+    //   })
+    
     return (
       <div className="root">
-        {openType === "area" || openType === "mode" || openType === "price" ? (
-          <div className="mask" onClick={this.onCancel}></div>
+        {this.renderMask()}
+         {openType === "area" || openType === "mode" || openType === "price" ? (
+          <Mask className={'mask'} onClick={this.onCancel}></Mask>
         ) : null}
-
+        
         <div className="content">
           <FilterTitle
             onTitleClick={this.onTitleClick}
