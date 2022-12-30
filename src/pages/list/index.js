@@ -78,7 +78,7 @@ export default class houseList extends React.Component {
         </div>
       );
     }
-    const { houseImg, title, desc, tags, price } = house;
+    const { houseImg, title, desc, tags, price,houseCode } = house;
     return (
       <div className="house">
         <HouseItem
@@ -89,6 +89,7 @@ export default class houseList extends React.Component {
           price={price}
           key={key}
           style={style}
+          onClick={()=>{this.props.history.push({pathname:`/detail/${houseCode}`},{id:houseCode})}}
         ></HouseItem>
       </div>
     );

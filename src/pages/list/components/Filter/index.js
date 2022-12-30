@@ -4,9 +4,8 @@ import FilterMore from "../FilterMore";
 import FilterPicker from "../FilterPicker";
 import { API } from "../../../../utils/api";
 import "./index.scss";
-import { Spring, animated } from '@react-spring/web'
-import Mask from '../Mask'
-
+import { Spring, animated } from "@react-spring/web";
+import Mask from "../Mask";
 
 const titleSelectedStatus = {
   area: false,
@@ -116,7 +115,7 @@ export default class Filter extends Component {
       selectedValue: newSelectedValue,
       titleSelectedStatus: newtitleSelectedStatus,
     });
-    window.scrollTo(0,0)
+    window.scrollTo(0, 0);
   };
   // 获取筛选项的数据
   async getFilterData() {
@@ -186,14 +185,15 @@ export default class Filter extends Component {
   //   from: { opacity: 0 },
   //   to: { opacity: 1 }
   // });
-  renderMask(){
-    const {openType} = this.state
-    let isHide = false
-    if(openType==='more'||openType===''){
-isHide=true
-
+  renderMask() {
+    const { openType } = this.state;
+    let isHide = false;
+    if (openType === "more" || openType === "") {
+      return null;
     }
-    return (<Mask className={'mask'} onClick={this.onCancel} isHide={isHide}></Mask>)
+    return (
+      <Mask className={"mask"} onClick={this.onCancel} isHide={isHide}></Mask>
+    );
   }
   render() {
     const { titleSelectedStatus, openType } = this.state;
@@ -201,14 +201,14 @@ isHide=true
     //     from: { opacity: 0 },
     //     to: { opacity: 1 },
     //   })
-    
+
     return (
       <div className="root">
         {this.renderMask()}
-         {openType === "area" || openType === "mode" || openType === "price" ? (
-          <Mask className={'mask'} onClick={this.onCancel}></Mask>
+        {openType === "area" || openType === "mode" || openType === "price" ? (
+          <Mask className={"mask"} onClick={this.onCancel}></Mask>
         ) : null}
-        
+
         <div className="content">
           <FilterTitle
             onTitleClick={this.onTitleClick}

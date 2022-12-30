@@ -14,6 +14,7 @@ const NoHouse = ({ children }) => (
       alt="暂无数据"
     />
     <p className="msg">{children}</p>
+    
   </div>
 )
 
