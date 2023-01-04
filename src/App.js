@@ -9,6 +9,7 @@ import './assets/fonts/iconfont.css'
 import Home from './pages/Home'
 import CityList from './pages/CityList'
 import HouseDetail from "./pages/HouseDetail"
+import Login from "./pages/Login"
 
 function App () {
   return (
@@ -53,6 +54,7 @@ function App () {
       {/* <Route path="/map" component={Map} /> */}
       <Route path="/citylist" component={CityList} />
       <Route path="/detail/:id" component={HouseDetail} />
+      <Route path="/login" component={Login} />
     </Router>
   );
 }
