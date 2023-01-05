@@ -29,7 +29,12 @@ export default class Login extends Component {
       // 登录成功
       localStorage.setItem("hkzf_token", res.data.body.token);
       Toast.success("登录成功！");
-      this.props.history(-1);
+      if (this.props.location.state) {
+        // 返回重定向之前的页面
+        this.props.push(this.props.location.state.backUrl.pathname);
+      } else {
+        this.props.history(-1);
+      }
     } else {
       // 登录失败
       Toast.info(res.data.description);

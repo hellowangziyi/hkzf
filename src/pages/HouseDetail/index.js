@@ -3,128 +3,132 @@ import { API } from "../../utils/api";
 import { BASE_URL } from "../../utils/url";
 
 import NavHeader from "../../components/NavHeader";
-import HousePackage from '../../components/HousePackage'
-import HouseItem from '../../components/HouseItem'
+import HousePackage from "../../components/HousePackage";
+import HouseItem from "../../components/HouseItem";
 
-import { Carousel, WingBlank,Flex } from 'antd-mobile-v2';
+import { Carousel, WingBlank, Flex } from "antd-mobile-v2";
 
-import "./index.scss"
+import "./index.scss";
 
 // 猜你喜欢
 const recommendHouses = [
   {
     id: 1,
-    src: BASE_URL + '/img/message/1.png',
-    desc: '72.32㎡/南 北/低楼层',
-    title: '安贞西里 3室1厅',
+    src: BASE_URL + "/img/message/1.png",
+    desc: "72.32㎡/南 北/低楼层",
+    title: "安贞西里 3室1厅",
     price: 4500,
-    tags: ['随时看房']
+    tags: ["随时看房"],
   },
   {
     id: 2,
-    src: BASE_URL + '/img/message/2.png',
-    desc: '83㎡/南/高楼层',
-    title: '天居园 2室1厅',
+    src: BASE_URL + "/img/message/2.png",
+    desc: "83㎡/南/高楼层",
+    title: "天居园 2室1厅",
     price: 7200,
-    tags: ['近地铁']
+    tags: ["近地铁"],
   },
   {
     id: 3,
-    src: BASE_URL + '/img/message/3.png',
-    desc: '52㎡/西南/低楼层',
-    title: '角门甲4号院 1室1厅',
+    src: BASE_URL + "/img/message/3.png",
+    desc: "52㎡/西南/低楼层",
+    title: "角门甲4号院 1室1厅",
     price: 4300,
-    tags: ['集中供暖']
-  }
-]
+    tags: ["集中供暖"],
+  },
+];
 export default class HouseDetail extends Component {
-  state={
-    isLoading:false,
+  state = {
+    isLoading: false,
     // 房屋详情
     houseInfo: {
       // 房屋图片
       houseImg: [],
       // 标题
-      title: '',
+      title: "",
       // 标签
       tags: [],
       // 租金
       price: 0,
       // 房型
-      roomType: '',
+      roomType: "",
       // 房屋面积
       size: 0,
       // 朝向
       oriented: [],
       // 楼层
-      floor: '',
+      floor: "",
       // 小区名称
-      community: '',
+      community: "",
       // 地理位置
       coord: {
-        latitude: '39.928033',
-        longitude: '116.529466'
+        latitude: "39.928033",
+        longitude: "116.529466",
       },
       // 房屋配套
       supporting: [],
       // 房屋标识
-      houseCode: '',
+      houseCode: "",
       // 房屋描述
-      description: ''
+      description: "",
     },
-    isFavorite:false
-  }
+    isFavorite: false,
+  };
   componentDidMount() {
     console.log("this.props.match", this.props.match);
     this.getHouseDetail();
   }
   getHouseDetail = async () => {
     const { id } = this.props.match.params;
-    this.setState({isLoading:true})
+    this.setState({ isLoading: true });
     const res = await API.get(`${BASE_URL}/houses/${id}`);
     console.log("res", res);
     this.setState({
       houseInfo: res.data.body,
-      isLoading: false
-    })
+      isLoading: false,
+    });
   };
-  renderSwiper=()=>{
-    const {houseInfo:{houseImg}} = this.state
-    console.log('houseIMg',houseImg);
-    if(!houseImg.length){return null}
-    return houseImg.map(item=>(<a key={item} href="http://itcast.cn">
-    <img src={BASE_URL + item} alt="" />
-  </a>))
-  }
-  renderTags = ()=>{
+  renderSwiper = () => {
     const {
-      houseInfo: { tags }
-    } = this.state
+      houseInfo: { houseImg },
+    } = this.state;
+    console.log("houseIMg", houseImg);
+    if (!houseImg.length) {
+      return null;
+    }
+    return houseImg.map((item) => (
+      <a key={item} href="http://itcast.cn">
+        <img src={BASE_URL + item} alt="" />
+      </a>
+    ));
+  };
+  renderTags = () => {
+    const {
+      houseInfo: { tags },
+    } = this.state;
 
     return tags.map((item, index) => {
       // 如果标签数量超过3个，后面的标签就都展示位第三个标签的样式
-      let tagClass = ''
+      let tagClass = "";
       if (index > 2) {
-        tagClass = 'tag3'
+        tagClass = "tag3";
       } else {
-        tagClass = 'tag' + (index + 1)
+        tagClass = "tag" + (index + 1);
       }
 
       return (
-        <span key={item} className={["tag", tagClass].join(' ')}>
+        <span key={item} className={["tag", tagClass].join(" ")}>
           {item}
         </span>
-      )
-    })
-  }
-  handleFavorite=()=>{
-    
-  }
+      );
+    });
+  };
+  handleFavorite = () => {};
   render() {
     const {
       isLoading,
       houseInfo: {
-        community = '',
+        community = "",
         title,
         price,
         roomType,
@@ -132,10 +136,10 @@ export default class HouseDetail extends Component {
         floor,
         oriented,
         supporting,
-        description
+        description,
       },
-      isFavorite
-    } = this.state
+      isFavorite,
+    } = this.state;
     return (
       <div className="houseDetail">
         {/* 导航栏 */}
@@ -146,23 +150,20 @@ export default class HouseDetail extends Component {
           房屋详情
         </NavHeader>
 
-         {/* 轮播图 */}
-         <div className="slides">
+        {/* 轮播图 */}
+        <div className="slides">
           {!isLoading ? (
             // <Carousel autoplay infinite autoplayInterval={5000}>
             //   {this.renderSwipers()}
             // </Carousel>
             <WingBlank>
-            <Carousel
-              autoplay
-              infinite
-            >
-              {this.renderSwiper()}
-            </Carousel>
+              <Carousel autoplay infinite>
+                {this.renderSwiper()}
+              </Carousel>
             </WingBlank>
           ) : (
-              ''
-            )}
+            ""
+          )}
         </div>
 
         {/* 房屋基础信息 */}
@@ -204,7 +205,7 @@ export default class HouseDetail extends Component {
             <Flex.Item>
               <div>
                 <span className="title">朝向：</span>
-                {oriented.join('、')}
+                {oriented.join("、")}
               </div>
               <div>
                 <span className="title">类型：</span>普通住宅
@@ -213,8 +214,8 @@ export default class HouseDetail extends Component {
           </Flex>
         </div>
 
-         {/* 房屋配套 */}
-         <div className="about">
+        {/* 房屋配套 */}
+        <div className="about">
           <div className="houseTitle">房屋配套</div>
           {/* <HousePackage list={supporting} /> */}
           {/* <div className="title-empty">暂无数据</div> */}
@@ -222,17 +223,17 @@ export default class HouseDetail extends Component {
           {supporting.length === 0 ? (
             <div className="titleEmpty">暂无数据</div>
           ) : (
-              <HousePackage list={supporting} />
-            )}
+            <HousePackage list={supporting} />
+          )}
         </div>
 
-         {/* 房屋概况 */}
-         <div className="set">
+        {/* 房屋概况 */}
+        <div className="set">
           <div className="houseTitle">房源概况</div>
           <div>
             <div className="contact">
               <div className="user">
-                <img src={BASE_URL + '/img/avatar.png'} alt="头像" />
+                <img src={BASE_URL + "/img/avatar.png"} alt="头像" />
                 <div className="useInfo">
                   <div>王女士</div>
                   <div className="userAuth">
@@ -244,17 +245,15 @@ export default class HouseDetail extends Component {
               <span className="userMsg">发消息</span>
             </div>
 
-            <div className="descText">
-              {description || '暂无房屋描述'}
-            </div>
+            <div className="descText">{description || "暂无房屋描述"}</div>
           </div>
         </div>
 
-         {/* 推荐 */}
-         <div className="recommend">
+        {/* 推荐 */}
+        <div className="recommend">
           <div className="houseTitle">猜你喜欢</div>
           <div className="items">
-            {recommendHouses.map(item => (
+            {recommendHouses.map((item) => (
               <HouseItem {...item} key={item.id} />
             ))}
           </div>
@@ -265,14 +264,12 @@ export default class HouseDetail extends Component {
           <Flex.Item onClick={this.handleFavorite}>
             <img
               src={
-                BASE_URL + (isFavorite ? '/img/star.png' : '/img/unstar.png')
+                BASE_URL + (isFavorite ? "/img/star.png" : "/img/unstar.png")
               }
               className="favoriteImg"
               alt="收藏"
             />
-            <span className="favorite">
-              {isFavorite ? '已收藏' : '收藏'}
-            </span>
+            <span className="favorite">{isFavorite ? "已收藏" : "收藏"}</span>
           </Flex.Item>
           <Flex.Item>在线咨询</Flex.Item>
           <Flex.Item>
@@ -281,7 +278,6 @@ export default class HouseDetail extends Component {
             </a>
           </Flex.Item>
         </Flex>
-
       </div>
     );
   }
