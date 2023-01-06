@@ -9,6 +9,8 @@ import HouseItem from "../../components/HouseItem";
 import { Carousel, WingBlank, Flex } from "antd-mobile-v2";
 
 import "./index.scss";
+import { isAuth } from "../../utils/auth";
+import { Modal, Toast } from "antd-mobile";
 
 // 猜你喜欢
 const recommendHouses = [
@@ -123,7 +125,60 @@ export default class HouseDetail extends Component {
       );
     });
   };
-  handleFavorite = () => {};
+  checkFavorite = async () => {
+    if (!isAuth()) {
+      //未登录
+      return;
+    }
+    const { id } = this.props.match.params;
+    const res = await API.get(`/user/favorites/${id}`);
+    const { status, body } = res.data;
+    if (status === 200) {
+      this.setState({
+        isFavorite: body.isFavorite,
+      });
+    }
+  };
+  handleFavorite = async () => {
+    if (!isAuth()) {
+      // 未登录
+      const { history, location } = this.props;
+      return Modal.show({
+        // title: '请先登录！',
+        content: "登录后才能收藏，请先登录！",
+        actions: [{ key: "login", text: "去登录", primary: true }],
+        onClick: () => {
+          history.push("/login", { from: location });
+        },
+      });
+    }
+    const { isFavorite } = this.state;
+    const { id } = this.props.match.params;
+    if (isFavorite) {
+      // 已经收藏了，则取消收藏
+      const res = await API.delete(`/user/favorite/${id}`);
+      if (res.data.status === 200) {
+        Toast.info("已取消收藏", 1, null, false);
+        this.setState({
+          isFavorite: false,
+        });
+      } else {
+        // token超时
+        Toast.info("登录超时，请重新登录", 1, null, false);
+      }
+    } else {
+      const res = await API.post(`/user/favorite/${id}`);
+      if (res.data.state === 200) {
+        Toast.info("收藏成功！", 1, null, false);
+        this.setState({
+          isFavorite: true,
+        });
+      } else {
+        // token超时
+        Toast.info("登录超时，请重新登录", 1, null, false);
+      }
+    }
+  };
   render() {
     const {
       isLoading,
