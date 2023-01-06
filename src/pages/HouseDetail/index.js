@@ -148,7 +148,7 @@ export default class HouseDetail extends Component {
         content: "登录后才能收藏，请先登录！",
         actions: [{ key: "login", text: "去登录", primary: true }],
         onClick: () => {
-          history.push("/login", { from: location });
+          history.push("/login", { backUrl: location });
         },
       });
     }
