@@ -146,10 +146,19 @@ export default class HouseDetail extends Component {
       return Modal.show({
         // title: '请先登录！',
         content: "登录后才能收藏，请先登录！",
-        actions: [{ key: "login", text: "去登录", primary: true }],
-        onClick: () => {
-          history.push("/login", { backUrl: location });
-        },
+        actions: [
+          {
+            key: "login",
+            text: "去登录",
+            primary: true,
+            onClick: () => {
+              console.log("点了");
+              history.push("/login", { backUrl: location });
+            },
+          },
+        ],
+        closeOnAction: true,
+        closeOnMaskClick: true,
       });
     }
     const { isFavorite } = this.state;
