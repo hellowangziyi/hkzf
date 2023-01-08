@@ -6,6 +6,7 @@ import News from "../News";
 import Index from "../Index";
 import houseList from "../list";
 import Profile from "../Profile";
+import Rent from "../Rent";
 
 import { TabBar } from "antd-mobile-v2";
 

@@ -32,7 +32,7 @@ const navs = [
     id: 4,
     img: Nav4,
     title: "去出租",
-    path: "/home/rent",
+    path: "/home/rent/add",
   },
 ];
 

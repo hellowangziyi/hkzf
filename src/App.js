@@ -11,6 +11,9 @@ import Home from "./pages/Home";
 import CityList from "./pages/CityList";
 import HouseDetail from "./pages/HouseDetail";
 import Login from "./pages/Login";
+import Rent from "./pages/Rent";
+import RentAdd from "./pages/Rent/Add";
+import RentSearch from "./pages/Rent/Search";
 
 function App() {
   return (
@@ -56,6 +59,13 @@ function App() {
       <Route path="/citylist" component={CityList} />
       <Route path="/detail/:id" component={HouseDetail} />
       <Route path="/login" component={Login} />
+
+      {/* 登录后才能访问 */}
+      <AuthRoute exact path="/rent" component={Rent}></AuthRoute>
+      {/* <AuthRoute path="/rent/add" component={RentAdd}></AuthRoute> */}
+      {/* <AuthRoute path="/rent/search" component={RentSearch}></AuthRoute> */}
+      <Route path="/rent/search" component={RentSearch}></Route>
+      <Route path="/rent/add" component={RentAdd}></Route>
     </Router>
   );
 }
